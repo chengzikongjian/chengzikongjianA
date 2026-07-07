@@ -1,12 +1,75 @@
-import { curriculumEntries, curriculumStages, curriculumSummary } from '../curriculum'
+﻿import { useState, useEffect, useRef } from "react";
+import { Volume2 } from "lucide-react";
+import HanziWriter from "hanzi-writer";
+import { curriculumEntries, curriculumStages, curriculumSummary } from "../curriculum";
+import { characters } from "../data";
+import { speak } from "../utils/speech";
+import "../lib-modal.css";
+
+function CharModal({ char, onClose }: { char: string; onClose: () => void }) {
+  const writerRef = useRef<HTMLDivElement>(null);
+  const found = characters.find((c) => c.char === char);
+
+  useEffect(() => {
+    if (!writerRef.current || !found) return;
+    writerRef.current.innerHTML = "";
+    HanziWriter.create(writerRef.current, found.strokeKey, {
+      width: 100, height: 100, padding: 6,
+      showOutline: true, strokeAnimationSpeed: 1.2,
+      delayBetweenStrokes: 120, radicalColor: "#ef476f",
+    });
+  }, [found]);
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <article className="char-modal" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close" onClick={onClose}>✕</button>
+        {found ? (
+          <>
+            <div className="modal-hanzi">{found.char}</div>
+            <p className="modal-pinyin">{found.pinyin}</p>
+            <p className="modal-meaning">{found.meaning}</p>
+            <div className="modal-chips">
+              {found.words.map((w) => <span key={w}>{w}</span>)}
+            </div>
+            <p className="modal-sentence">{found.sentences[0]}</p>
+            <div className="modal-meta">
+              <span>部首：{found.radical ?? "-"}</span>
+              <span>笔画：{found.strokeCount ?? "-"}</span>
+              <span>结构：{found.structure ?? "-"}</span>
+            </div>
+            <div className="modal-actions">
+              <button onClick={() => speak(found.char)}>
+                <Volume2 size={16} /> 听读音
+              </button>
+            </div>
+            <div className="writer-box mini-writer" ref={writerRef} />
+          </>
+        ) : (
+          <>
+            <div className="modal-hanzi">{char}</div>
+            <p className="modal-hint">课程库字，仍在逐步补充完整档案</p>
+            <div className="modal-actions">
+              <button onClick={() => speak(char)}>
+                <Volume2 size={16} /> 听读音
+              </button>
+            </div>
+          </>
+        )}
+      </article>
+    </div>
+  );
+}
 
 export function LibraryScreen() {
+  const [selectedChar, setSelectedChar] = useState<string | null>(null);
+
   return (
     <section className="library-layout">
       <div className="section-title">
         <p className="eyebrow">分级字库</p>
         <h2>按幼儿园和小学 1-6 年级建立课程识字库</h2>
-        <p>当前版本采用课程目标库 + 精编互动关卡的双层结构，先保证覆盖规模，再逐步补充人工校对释义、音频和课文同步。</p>
+        <p>点击下方任意汉字，可查看详细档案。</p>
       </div>
 
       <div className="library-summary">
@@ -26,8 +89,8 @@ export function LibraryScreen() {
 
       <div className="stage-library-grid">
         {curriculumStages.map((stage) => {
-          const entries = curriculumEntries.filter((entry) => entry.stageId === stage.id)
-          const coreCount = entries.filter((entry) => entry.priority === 'core').length
+          const entries = curriculumEntries.filter((entry) => entry.stageId === stage.id);
+          const coreCount = entries.filter((entry) => entry.priority === "core").length;
           return (
             <article className="stage-library-card" key={stage.id}>
               <div className="stage-library-head">
@@ -54,13 +117,24 @@ export function LibraryScreen() {
               </div>
               <div className="character-sample-grid" aria-label={`${stage.title}样例字`}>
                 {entries.slice(0, 42).map((entry) => (
-                  <span key={entry.id}>{entry.char}</span>
+                  <button
+                    className="char-sample-btn"
+                    key={entry.id}
+                    onClick={() => setSelectedChar(entry.char)}
+                    title={`点击查看「${entry.char}」详情`}
+                  >
+                    {entry.char}
+                  </button>
                 ))}
               </div>
             </article>
-          )
+          );
         })}
       </div>
+
+      {selectedChar && (
+        <CharModal char={selectedChar} onClose={() => setSelectedChar(null)} />
+      )}
     </section>
-  )
+  );
 }

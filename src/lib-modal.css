@@ -1,0 +1,174 @@
+﻿/* 字库 - 可点击汉字按钮 */
+.char-sample-btn {
+  display: grid;
+  min-height: 34px;
+  place-items: center;
+  border: 1px solid #b8d2ce;
+  border-radius: 6px;
+  background: #fbfffd;
+  color: #14342f;
+  font-size: 1.25rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+
+.char-sample-btn:hover {
+  background: #fff3bf;
+  border-color: #f59e0b;
+  transform: scale(1.08);
+  z-index: 2;
+}
+
+.char-sample-btn:active {
+  transform: scale(.95);
+}
+
+/* 字库弹窗遮罩 */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background: rgba(20, 52, 47, .55);
+  animation: fade-in .2s ease;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 字库弹窗卡片 */
+.char-modal {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  width: min(360px, calc(100% - 40px));
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px 24px 24px;
+  border: 2px solid #14342f;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 8px 8px 0 rgba(20, 52, 47, .25);
+  animation: pop-in .25s ease;
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(.88); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 1.2rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  background: #ffe1e6;
+}
+
+.modal-hanzi {
+  font-size: 6rem;
+  line-height: 1;
+  color: #14342f;
+  font-weight: 900;
+  text-shadow: 2px 2px 0 rgba(239, 71, 111, .12);
+}
+
+.modal-pinyin {
+  margin: 0;
+  color: #ef476f;
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.modal-meaning {
+  margin: 0;
+  color: #365d58;
+  text-align: center;
+  font-size: 1.05rem;
+}
+
+.modal-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.modal-chips span {
+  padding: 6px 10px;
+  border: 1.5px solid #14342f;
+  border-radius: 6px;
+  background: #f7fff9;
+  font-weight: 800;
+  font-size: .95rem;
+}
+
+.modal-sentence {
+  margin: 0;
+  color: #4f6f6b;
+  text-align: center;
+  font-size: .95rem;
+  font-style: italic;
+}
+
+.modal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.modal-meta span {
+  padding: 5px 10px;
+  border: 1px solid #b8d2ce;
+  border-radius: 6px;
+  background: #fbfffd;
+  color: #365d58;
+  font-size: .85rem;
+  font-weight: 700;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.modal-actions button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 12px;
+}
+
+.modal-hint {
+  margin: 0;
+  color: #8ca8a4;
+  text-align: center;
+  font-size: .9rem;
+}
+
+.mini-writer {
+  width: 116px !important;
+  height: 116px !important;
+  border: 1.5px dashed #8ca8a4;
+  border-radius: 8px;
+  background: #ffffff;
+}
