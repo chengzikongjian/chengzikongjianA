@@ -447,6 +447,7 @@ button:disabled {
 
 .story-stage,
 .studio-layout,
+.library-layout,
 .report-layout,
 .badge-layout {
   display: grid;
@@ -519,6 +520,128 @@ button:disabled {
 .creation-preview strong {
   color: #14342f;
   font-size: clamp(1.5rem, 5vw, 3rem);
+}
+
+.library-summary,
+.stage-library-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.library-summary {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.library-summary article,
+.stage-library-card {
+  border: 2px solid #14342f;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 5px 5px 0 rgba(20, 52, 47, .16);
+}
+
+.library-summary article {
+  display: grid;
+  gap: 8px;
+  min-height: 118px;
+  align-content: center;
+  padding: 18px;
+}
+
+.library-summary strong {
+  color: #14342f;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1;
+}
+
+.library-summary span,
+.library-meta span {
+  color: #526f6b;
+  font-weight: 900;
+}
+
+.stage-library-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.stage-library-card {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  padding: 18px;
+}
+
+.stage-library-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.stage-library-head h3 {
+  margin-bottom: 0;
+}
+
+.stage-library-head strong {
+  padding: 8px 10px;
+  border: 2px solid #14342f;
+  border-radius: 8px;
+  background: #ffd166;
+  white-space: nowrap;
+}
+
+.stage-library-card p {
+  margin-bottom: 0;
+  color: #365d58;
+}
+
+.stage-library-card dl {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.stage-library-card dt {
+  margin-bottom: 3px;
+  color: #0f766e;
+  font-weight: 900;
+}
+
+.stage-library-card dd {
+  margin: 0;
+  color: #365d58;
+}
+
+.library-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.library-meta span {
+  padding: 6px 8px;
+  border: 2px solid #14342f;
+  border-radius: 8px;
+  background: #f7fff9;
+  font-size: .9rem;
+}
+
+.character-sample-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.character-sample-grid span {
+  display: grid;
+  min-height: 34px;
+  place-items: center;
+  border: 1px solid #b8d2ce;
+  border-radius: 6px;
+  background: #fbfffd;
+  color: #14342f;
+  font-size: 1.25rem;
+  font-weight: 900;
 }
 
 .report-cards,
@@ -672,6 +795,8 @@ button:disabled {
 @media (max-width: 980px) {
   .hero-band,
   .lesson-layout,
+  .library-summary,
+  .stage-library-grid,
   .report-cards,
   .review-panel {
     grid-template-columns: 1fr;
@@ -702,8 +827,14 @@ button:disabled {
   }
 
   .level-progress-grid,
+  .library-summary,
+  .stage-library-grid,
   .report-cards {
     grid-template-columns: 1fr;
+  }
+
+  .character-sample-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
   .option-grid {

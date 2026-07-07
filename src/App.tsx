@@ -3,6 +3,7 @@ import HanziWriter from 'hanzi-writer'
 import {
   Award,
   BarChart3,
+  LibraryBig,
   BookOpen,
   CheckCircle2,
   Gamepad2,
@@ -17,11 +18,12 @@ import {
   Volume2,
 } from 'lucide-react'
 import './App.css'
+import { curriculumEntries, curriculumStages, curriculumSummary } from './curriculum'
 import { badges, characters, lessons, levels, sentenceTemplates, stories } from './data'
 import { useProgressStore } from './useProgressStore'
 import type { CharacterItem, GameResult, GameType, Lesson } from './types'
 
-type Screen = 'map' | 'lesson' | 'story' | 'studio' | 'report' | 'badges'
+type Screen = 'map' | 'lesson' | 'story' | 'studio' | 'library' | 'report' | 'badges'
 
 interface QuizQuestion {
   type: GameType
@@ -174,6 +176,9 @@ function App() {
         <button className={screen === 'studio' ? 'active' : ''} onClick={() => setScreen('studio')}>
           <PencilLine size={18} /> 创意工坊
         </button>
+        <button className={screen === 'library' ? 'active' : ''} onClick={() => setScreen('library')}>
+          <LibraryBig size={18} /> 分级字库
+        </button>
         <button className={screen === 'report' ? 'active' : ''} onClick={() => setScreen('report')}>
           <BarChart3 size={18} /> 学情报告
         </button>
@@ -223,6 +228,8 @@ function App() {
           saveCreation={saveCreation}
         />
       )}
+
+      {screen === 'library' && <LibraryScreen />}
 
       {screen === 'report' && <ReportScreen />}
 
@@ -542,12 +549,75 @@ function StudioScreen({
   )
 }
 
+function LibraryScreen() {
+  return (
+    <section className="library-layout">
+      <div className="section-title">
+        <p className="eyebrow">分级字库</p>
+        <h2>按幼儿园和小学 1-6 年级建立课程识字库</h2>
+        <p>当前版本采用课程目标库 + 精编互动关卡的双层结构，先保证覆盖规模，再逐步补充人工校对释义、音频和课文同步。</p>
+      </div>
+
+      <div className="library-summary">
+        <article>
+          <strong>{curriculumSummary.kindergartenTarget}</strong>
+          <span>幼儿园启蒙目标字</span>
+        </article>
+        <article>
+          <strong>{curriculumSummary.primaryTarget}</strong>
+          <span>小学 1-6 年级目标字</span>
+        </article>
+        <article>
+          <strong>{curriculumSummary.totalTarget}</strong>
+          <span>分级字库总条目</span>
+        </article>
+      </div>
+
+      <div className="stage-library-grid">
+        {curriculumStages.map((stage) => {
+          const entries = curriculumEntries.filter((entry) => entry.stageId === stage.id)
+          const coreCount = entries.filter((entry) => entry.priority === 'core').length
+          return (
+            <article className="stage-library-card" key={stage.id}>
+              <div className="stage-library-head">
+                <div>
+                  <p className="eyebrow">{stage.ageRange}</p>
+                  <h3>{stage.title}</h3>
+                </div>
+                <strong>{entries.length} 字</strong>
+              </div>
+              <p>{stage.focus}</p>
+              <dl>
+                <div>
+                  <dt>互动形式</dt>
+                  <dd>{stage.interaction}</dd>
+                </div>
+                <div>
+                  <dt>评价重点</dt>
+                  <dd>{stage.assessment}</dd>
+                </div>
+              </dl>
+              <div className="library-meta">
+                <span>核心样例 {coreCount} 字</span>
+                <span>拓展补齐 {entries.length - coreCount} 字</span>
+              </div>
+              <div className="character-sample-grid" aria-label={`${stage.title}样例字`}>
+                {entries.slice(0, 42).map((entry) => <span key={entry.id}>{entry.char}</span>)}
+              </div>
+            </article>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+
 function ReportScreen() {
   const { progress } = useProgressStore()
   const learned = new Set(progress.learnedCharacterIds)
   const completedLessons = lessons.filter((lesson) => (progress.lessonStars[lesson.id] ?? 0) > 0)
   const totalStars = Object.values(progress.lessonStars).reduce((sum, stars) => sum + stars, 0)
-  const mastery = Math.round((learned.size / characters.length) * 100)
+  const mastery = Math.round((learned.size / curriculumSummary.totalTarget) * 100)
   const nextLesson = lessons.find((lesson) => {
     const unfinished = (progress.lessonStars[lesson.id] ?? 0) === 0
     const required = lesson.unlockRules.requiredLessonId
@@ -591,7 +661,7 @@ function ReportScreen() {
         <article className="report-card">
           <Target size={24} />
           <strong>{mastery}%</strong>
-          <span>MVP 掌握率</span>
+          <span>课程库掌握率</span>
         </article>
       </div>
 
