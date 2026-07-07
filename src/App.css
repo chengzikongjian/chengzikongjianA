@@ -12,17 +12,17 @@
 }
 
 .app-shell {
-  width: min(980px, calc(100% - 28px));
+  width: min(1180px, calc(100% - 40px));
   margin: 0 auto;
-  padding: 16px 0 42px;
+  padding: 24px 0 56px;
 }
 
 .hero-band {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, auto);
+  gap: 28px;
   align-items: center;
-  padding: 18px 20px;
+  padding: 28px 32px;
   border: 2px solid #14342f;
   border-radius: 8px;
   background:
@@ -59,7 +59,7 @@ h1 {
 .stats-panel {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 12px;
   justify-content: flex-end;
 }
 
@@ -67,8 +67,8 @@ h1 {
   display: flex;
   align-items: center;
   gap: 8px;
-  min-height: 40px;
-  padding: 8px 10px;
+  min-height: 44px;
+  padding: 10px 14px;
   border: 2px solid #14342f;
   border-radius: 8px;
   background: #ffffff;
@@ -77,11 +77,10 @@ h1 {
 }
 
 .top-nav {
-  display: flex;
-  gap: 10px;
-  margin: 18px 0;
-  overflow-x: auto;
-  padding-bottom: 5px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(136px, 1fr));
+  gap: 14px;
+  margin: 28px 0 34px;
 }
 
 button {
@@ -108,10 +107,11 @@ button:disabled {
 .top-nav button {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  min-height: 48px;
-  padding: 10px 16px;
-  white-space: nowrap;
+  min-height: 54px;
+  padding: 12px 14px;
+  text-align: center;
 }
 
 .top-nav button.active,
@@ -120,7 +120,7 @@ button:disabled {
 }
 
 .section-title h2 {
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   color: #14342f;
 }
 
@@ -132,11 +132,12 @@ button:disabled {
 .section-title p {
   margin-bottom: 0;
   color: #4f6f6b;
+  line-height: 1.7;
 }
 
 .chain-stage {
   display: grid;
-  gap: 14px;
+  gap: 20px;
 }
 
 .compact-title {
@@ -452,7 +453,7 @@ button:disabled {
 .report-layout,
 .badge-layout {
   display: grid;
-  gap: 18px;
+  gap: 26px;
 }
 
 .story-book {
@@ -789,11 +790,11 @@ button:disabled {
 .level-progress-grid,
 .review-panel {
   display: grid;
-  gap: 12px;
+  gap: 18px;
 }
 
 .report-cards {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .report-card,
@@ -808,10 +809,10 @@ button:disabled {
 
 .report-card {
   display: grid;
-  gap: 8px;
-  min-height: 142px;
+  gap: 12px;
+  min-height: 158px;
   align-content: center;
-  padding: 18px;
+  padding: 26px;
 }
 
 .report-card svg {
@@ -833,10 +834,11 @@ button:disabled {
 
 .level-progress-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .level-progress {
-  padding: 16px;
+  padding: 22px;
 }
 
 .level-progress > div:first-child {
@@ -872,7 +874,7 @@ button:disabled {
 
 .next-lesson,
 .review-words {
-  padding: 18px;
+  padding: 24px;
 }
 
 .next-lesson {
@@ -946,6 +948,14 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 
+  .hero-band {
+    gap: 22px;
+  }
+
+  .stats-panel {
+    justify-content: flex-start;
+  }
+
   .report-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -953,13 +963,24 @@ button:disabled {
 
 @media (max-width: 620px) {
   .app-shell {
-    width: min(100% - 18px, 1180px);
-    padding-top: 10px;
+    width: min(100% - 24px, 1180px);
+    padding-top: 14px;
   }
 
   .hero-band {
-    padding: 18px;
+    padding: 22px;
     box-shadow: 5px 5px 0 #14342f;
+  }
+
+  .top-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 22px 0 28px;
+  }
+
+  .top-nav button {
+    min-height: 50px;
+    padding: 10px;
   }
 
   .stats-panel {
