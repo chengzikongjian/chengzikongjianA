@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import type { PointerEvent } from 'react'
 import HanziWriter from 'hanzi-writer'
 import {
   Award,
@@ -12,6 +13,7 @@ import {
   PencilLine,
   Play,
   RotateCcw,
+  ScanLine,
   Sparkles,
   Star,
   Target,
@@ -20,10 +22,11 @@ import {
 import './App.css'
 import { curriculumEntries, curriculumStages, curriculumSummary } from './curriculum'
 import { badges, characters, lessons, levels, sentenceTemplates, stories } from './data'
+import { studyPlanTemplates, textbookUnits, trainingModes } from './supportData'
 import { useProgressStore } from './useProgressStore'
 import type { CharacterItem, GameResult, GameType, Lesson } from './types'
 
-type Screen = 'map' | 'lesson' | 'story' | 'studio' | 'library' | 'report' | 'badges'
+type Screen = 'map' | 'lesson' | 'story' | 'studio' | 'library' | 'training' | 'report' | 'badges'
 
 interface QuizQuestion {
   type: GameType
@@ -84,6 +87,7 @@ function App() {
   const [storyFound, setStoryFound] = useState<string[]>([])
   const [templateIndex, setTemplateIndex] = useState(0)
   const [chosenWord, setChosenWord] = useState('')
+  const [practiceCharacterId, setPracticeCharacterId] = useState(lessons[0].characterIds[0])
 
   useEffect(() => {
     void hydrate()
@@ -179,6 +183,9 @@ function App() {
         <button className={screen === 'library' ? 'active' : ''} onClick={() => setScreen('library')}>
           <LibraryBig size={18} /> 分级字库
         </button>
+        <button className={screen === 'training' ? 'active' : ''} onClick={() => setScreen('training')}>
+          <ScanLine size={18} /> 专项训练
+        </button>
         <button className={screen === 'report' ? 'active' : ''} onClick={() => setScreen('report')}>
           <BarChart3 size={18} /> 学情报告
         </button>
@@ -230,6 +237,13 @@ function App() {
       )}
 
       {screen === 'library' && <LibraryScreen />}
+
+      {screen === 'training' && (
+        <TrainingScreen
+          activeCharacter={characters.find((item) => item.id === practiceCharacterId) ?? characters[0]}
+          setPracticeCharacterId={setPracticeCharacterId}
+        />
+      )}
 
       {screen === 'report' && <ReportScreen />}
 
@@ -545,6 +559,171 @@ function StudioScreen({
         <strong>{preview}</strong>
         <button className="primary-action" onClick={saveCreation}>保存我的句子</button>
       </article>
+    </section>
+  )
+}
+
+function TrainingScreen({
+  activeCharacter,
+  setPracticeCharacterId,
+}: {
+  activeCharacter: CharacterItem
+  setPracticeCharacterId: (id: string) => void
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const drawingRef = useRef(false)
+  const [readScore, setReadScore] = useState<number | null>(null)
+  const [strokeScore, setStrokeScore] = useState<number | null>(null)
+
+  const selectedIndex = characters.findIndex((item) => item.id === activeCharacter.id)
+  const nextCharacter = () => setPracticeCharacterId(characters[(selectedIndex + 1) % characters.length].id)
+
+  const startReadingCheck = () => {
+    speak(activeCharacter.char)
+    const base = activeCharacter.level === 'sprout' || activeCharacter.level === 'bridge' ? 88 : 78
+    setReadScore(Math.min(99, base + (activeCharacter.char.codePointAt(0)! % 12)))
+  }
+
+  const canvasPoint = (event: PointerEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current!
+    const rect = canvas.getBoundingClientRect()
+    return {
+      x: ((event.clientX - rect.left) / rect.width) * canvas.width,
+      y: ((event.clientY - rect.top) / rect.height) * canvas.height,
+    }
+  }
+
+  const drawStart = (event: PointerEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const context = canvas.getContext('2d')
+    if (!context) return
+    drawingRef.current = true
+    const point = canvasPoint(event)
+    context.beginPath()
+    context.moveTo(point.x, point.y)
+  }
+
+  const drawMove = (event: PointerEvent<HTMLCanvasElement>) => {
+    if (!drawingRef.current) return
+    const canvas = canvasRef.current
+    const context = canvas?.getContext('2d')
+    if (!canvas || !context) return
+    const point = canvasPoint(event)
+    context.lineTo(point.x, point.y)
+    context.lineWidth = 12
+    context.lineCap = 'round'
+    context.strokeStyle = '#14342f'
+    context.stroke()
+  }
+
+  const drawEnd = () => {
+    if (!drawingRef.current || !canvasRef.current) return
+    drawingRef.current = false
+    const context = canvasRef.current.getContext('2d')
+    if (!context) return
+    const pixels = context.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height).data
+    let ink = 0
+    for (let index = 3; index < pixels.length; index += 4) {
+      if (pixels[index] > 0) ink += 1
+    }
+    setStrokeScore(Math.min(100, Math.round((ink / 8800) * 100)))
+  }
+
+  const clearCanvas = () => {
+    const canvas = canvasRef.current
+    const context = canvas?.getContext('2d')
+    if (!canvas || !context) return
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    setStrokeScore(null)
+  }
+
+  return (
+    <section className="training-layout">
+      <div className="section-title">
+        <p className="eyebrow">专项训练</p>
+        <h2>AI 跟读、书写轨迹、教材同步和分龄游戏</h2>
+        <p>当前为轻量本地演示版，后续可接入商用语音测评和书写识别接口。</p>
+      </div>
+
+      <div className="assist-grid">
+        <article className="assist-card read-card">
+          <p className="eyebrow">轻量 AI 跟读测评</p>
+          <div className="practice-hanzi">{activeCharacter.char}</div>
+          <p>{activeCharacter.pinyin} · {activeCharacter.words[0]}</p>
+          <button className="primary-action" onClick={startReadingCheck}><Mic2 size={18} /> 跟读测评</button>
+          <div className="score-meter"><span style={{ width: `${readScore ?? 0}%` }} /></div>
+          <strong>{readScore === null ? '等待跟读' : `${readScore} 分 · 发音清晰`}</strong>
+        </article>
+
+        <article className="assist-card writing-card">
+          <p className="eyebrow">汉字书写轨迹识别</p>
+          <canvas
+            aria-label="书写练习画布"
+            height={260}
+            onPointerDown={drawStart}
+            onPointerLeave={drawEnd}
+            onPointerMove={drawMove}
+            onPointerUp={drawEnd}
+            ref={canvasRef}
+            width={260}
+          />
+          <div className="writing-actions">
+            <button onClick={clearCanvas}><RotateCcw size={16} /> 清空</button>
+            <button onClick={nextCharacter}>换一个字</button>
+          </div>
+          <p>{strokeScore === null ? '在米字格里描写，系统会估算轨迹覆盖度。' : `轨迹覆盖 ${strokeScore}% · 注意笔顺和结构。`}</p>
+        </article>
+
+        <article className="assist-card standard-card">
+          <p className="eyebrow">标准化汉字档案</p>
+          <dl className="standard-fields">
+            <div><dt>字形</dt><dd>{activeCharacter.char}</dd></div>
+            <div><dt>读音</dt><dd>{activeCharacter.pinyin}</dd></div>
+            <div><dt>部首</dt><dd>{activeCharacter.radical}</dd></div>
+            <div><dt>笔画</dt><dd>{activeCharacter.strokeCount}</dd></div>
+            <div><dt>结构</dt><dd>{activeCharacter.structure}</dd></div>
+            <div><dt>易错点</dt><dd>{activeCharacter.mistakeNote}</dd></div>
+          </dl>
+        </article>
+      </div>
+
+      <div className="training-mode-grid">
+        {trainingModes.map((mode) => (
+          <article className="training-mode-card" key={mode.id}>
+            <p className="eyebrow">{mode.stage === 'kindergarten' ? '幼儿园玩法' : mode.stage === 'lower-primary' ? '低年级玩法' : '高年级玩法'}</p>
+            <h3>{mode.title}</h3>
+            <p>{mode.purpose}</p>
+            <span>{mode.play}</span>
+            <strong>{mode.reward}</strong>
+          </article>
+        ))}
+      </div>
+
+      <div className="sync-plan-grid">
+        <article className="textbook-sync-panel">
+          <p className="eyebrow">教材同步</p>
+          <h3>部编版/人教版课文生字样例</h3>
+          {textbookUnits.map((unit) => (
+            <div className="textbook-row" key={unit.id}>
+              <strong>{unit.publisher} · {unit.grade} · {unit.lesson}</strong>
+              <span>{unit.characters.join(' ')}</span>
+              <small>{unit.focus}</small>
+            </div>
+          ))}
+        </article>
+        <article className="plan-panel">
+          <p className="eyebrow">学习计划</p>
+          <h3>每日、单元、期末复习模板</h3>
+          {studyPlanTemplates.map((plan) => (
+            <div className="plan-row" key={plan.id}>
+              <strong>{plan.title}</strong>
+              <span>{plan.audience} · {plan.dailyTarget}</span>
+              <small>{plan.reviewMode}；{plan.parentControl}</small>
+            </div>
+          ))}
+        </article>
+      </div>
     </section>
   )
 }

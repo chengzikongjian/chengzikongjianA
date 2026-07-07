@@ -18,6 +18,11 @@ export interface CharacterItem {
   meaning: string
   words: string[]
   sentences: string[]
+  radical?: string
+  structure?: string
+  strokeCount?: number
+  mistakeNote?: string
+  pictographHint?: string
   level: LevelId
   tags: string[]
   strokeKey: string
