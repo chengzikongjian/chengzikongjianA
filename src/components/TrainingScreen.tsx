@@ -152,7 +152,7 @@ export function TrainingScreen({
         } else {
           setPictoIndex(next);
           setPictoPhase("emoji");
-          setShuffledOptions(buildPictoOptions(0));
+          setShuffledOptions(buildPictoOptions(next));
         }
       }, 700);
     },
