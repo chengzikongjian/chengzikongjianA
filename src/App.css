@@ -902,6 +902,37 @@ button:focus-visible {
   font-weight: 900;
 }
 
+/* 展开/收起按钮 */
+.expand-toggle-btn {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 16px;
+  margin-top: 6px;
+  border: 2px dashed #b8d2ce;
+  border-radius: 8px;
+  background: #f0faf7;
+  color: #2d6a4f;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+
+.expand-toggle-btn:hover {
+  background: #e0f5ec;
+  border-color: #40916c;
+  transform: scale(1.02);
+}
+
+.expand-toggle-btn:active {
+  transform: scale(.97);
+}
+
+
 /* ===== 专项训练 ===== */
 .assist-grid {
   display: grid;
@@ -1435,3 +1466,30 @@ button:focus-visible {
 
 
 
+
+
+.expand-toggle-btn {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 16px;
+  border: 2px dashed #b8d2ce;
+  border-radius: 8px;
+  background: #f0faf7;
+  color: #2d6a4f;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.expand-toggle-btn:hover {
+  background: #e0f5ec;
+  border-color: #40916c;
+  transform: scale(1.02);
+}
+.expand-toggle-btn:active {
+  transform: scale(.97);
+}

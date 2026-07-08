@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef, useCallback } from "react";
 import { Volume2 } from "lucide-react";
 import HanziWriter from "hanzi-writer";
 import { curriculumEntries, curriculumStages, curriculumSummary } from "../curriculum";
@@ -63,6 +63,11 @@ function CharModal({ char, onClose }: { char: string; onClose: () => void }) {
 
 export function LibraryScreen() {
   const [selectedChar, setSelectedChar] = useState<string | null>(null);
+  const [expandedStages, setExpandedStages] = useState<Record<string, boolean>>({});
+
+  const toggleStage = useCallback((stageId: string) => {
+    setExpandedStages((prev) => ({ ...prev, [stageId]: !prev[stageId] }));
+  }, []);
 
   return (
     <section className="library-layout">
@@ -91,6 +96,9 @@ export function LibraryScreen() {
         {curriculumStages.map((stage) => {
           const entries = curriculumEntries.filter((entry) => entry.stageId === stage.id);
           const coreCount = entries.filter((entry) => entry.priority === "core").length;
+          const isExpanded = expandedStages[stage.id] ?? false;
+          const displayEntries = isExpanded ? entries : entries.slice(0, 42);
+          const totalCount = entries.length;
           return (
             <article className="stage-library-card" key={stage.id}>
               <div className="stage-library-head">
@@ -114,19 +122,30 @@ export function LibraryScreen() {
               <div className="library-meta">
                 <span>核心样例 {coreCount} 字</span>
                 <span>拓展补齐 {entries.length - coreCount} 字</span>
+                <span>{isExpanded ? '已展开全部' : `显示前 42 字`}</span>
               </div>
               <div className="character-sample-grid" aria-label={`${stage.title}样例字`}>
-                {entries.slice(0, 42).map((entry) => (
+                {displayEntries.map((entry) => (
                   <button
                     className="char-sample-btn"
                     key={entry.id}
                     onClick={() => setSelectedChar(entry.char)}
-                    title={`点击查看「${entry.char}」详情`}
+                    title={`${entry.char}`}
                   >
                     {entry.char}
                   </button>
                 ))}
               </div>
+              {totalCount > 42 && (
+                <button
+                  className="expand-toggle-btn"
+                  onClick={() => toggleStage(stage.id)}
+                >
+                  {isExpanded
+                    ? `收起，仅显示前 42 字（共 ${totalCount} 字）`
+                    : `展开全部 ${totalCount} 字`}
+                </button>
+              )}
             </article>
           );
         })}
