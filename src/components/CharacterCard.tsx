@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+﻿import { useEffect, useRef, useState } from 'react'
 import HanziWriter from 'hanzi-writer'
 import { Play, Volume2 } from 'lucide-react'
 import type { CharacterItem } from '../types'
@@ -14,19 +14,19 @@ export function CharacterCard({ character, compact }: { character: CharacterItem
     writerRef.current.innerHTML = ''
     if (!showStroke) return
     writerInstance.current = HanziWriter.create(writerRef.current, character.strokeKey, {
-      width: 130,
-      height: 130,
-      padding: 8,
+      width: 176,
+      height: 176,
+      padding: 20,
       showOutline: true,
-      strokeAnimationSpeed: 0.35,
-      delayBetweenStrokes: 450,
+      strokeAnimationSpeed: 0.4,
+      delayBetweenStrokes: 600,
       radicalColor: '#ef476f',
     })
   }, [character, showStroke])
 
   return (
     <article className={`character-card ${compact ? 'compact' : ''}`}>
-      <div className="picture-orbit" aria-label={`${character.char}的实物图`}>
+      <div className="picture-orbit" aria-label={`${character.char}鐨勫疄鐗╁浘`}>
         <span>{character.imageGlyph}</span>
       </div>
       <div className="hanzi-main">{character.char}</div>
@@ -37,17 +37,17 @@ export function CharacterCard({ character, compact }: { character: CharacterItem
       </div>
       <p className="sentence">{character.sentences[0]}</p>
       <div className="card-actions">
-        <button onClick={function() { speakCharacter(character) }} title="播放读音">
-          <Volume2 size={18} /> 听读音
+        <button onClick={function() { speakCharacter(character) }} title="鎾斁璇婚煶">
+          <Volume2 size={18} /> 鍚闊?
         </button>
         <button onClick={function() {
           setShowStroke(!showStroke)
           if (!showStroke) setTimeout(function() { if (writerInstance.current) writerInstance.current.animateCharacter() }, 300)
-        }} title="播放笔顺">
-          <Play size={18} /> {showStroke ? '收起笔顺' : '看笔顺'}
+        }} title="鎾斁绗旈『">
+          <Play size={18} /> {showStroke ? '鏀惰捣绗旈『' : '鐪嬬瑪椤?}
         </button>
       </div>
-      {showStroke && <div className="writer-box" ref={writerRef} aria-label="笔顺动画" />}
+      {showStroke && <div className="writer-box" ref={writerRef} aria-label="绗旈『鍔ㄧ敾" />}
     </article>
   )
 }
