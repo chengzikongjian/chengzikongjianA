@@ -47,6 +47,13 @@ export function TrainingScreen({
   const nextCharacter = () => setPracticeCharacterId(characters[(selectedIndex + 1) % characters.length].id);
 
   const shuffle = (arr: string[]) => [...arr].sort(() => Math.random() - 0.5);
+  const buildPictoOptions = (index: number) => {
+    const correct = pictographChars[index];
+    if (!correct) return [];
+    const others = pictographChars.filter((_, i) => i !== index).map((c) => c.char);
+    return shuffle([correct.char, ...others.sort(() => Math.random() - 0.5).slice(0, 3)]);
+  };
+
 
   const startReadingCheck = () => {
     speak(activeCharacter.char);
@@ -113,7 +120,7 @@ export function TrainingScreen({
     if (mode === "pictograph") {
       setPictoIndex(0);
       setPictoPhase("emoji");
-      setShuffledOptions(shuffle(pictographChars.map((c) => c.char)));
+      setShuffledOptions(buildPictoOptions(0));
     } else if (mode === "scene-find") {
       setSceneSelected(0);
       setFoundChars([]);
@@ -145,7 +152,7 @@ export function TrainingScreen({
         } else {
           setPictoIndex(next);
           setPictoPhase("emoji");
-          setShuffledOptions(shuffle(pictographChars.map((c) => c.char)));
+          setShuffledOptions(buildPictoOptions(0));
         }
       }, 700);
     },
