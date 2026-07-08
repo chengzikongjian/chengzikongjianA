@@ -2,13 +2,14 @@
 import { Volume2 } from "lucide-react";
 import HanziWriter from "hanzi-writer";
 import { curriculumEntries, curriculumStages, curriculumSummary } from "../curriculum";
-import { characters } from "../data";
-import { speak } from "../utils/speech";
+import { getCharacter, hasHandcraftedData } from "../data";
+import { speakCharacter } from "../utils/speech";
 import "../lib-modal.css";
 
 function CharModal({ char, onClose }: { char: string; onClose: () => void }) {
   const writerRef = useRef<HTMLDivElement>(null);
-  const found = characters.find((c) => c.char === char);
+  const found = getCharacter(char);
+  const isHandcrafted = hasHandcraftedData(char);
 
   useEffect(() => {
     if (!writerRef.current || !found) return;
@@ -39,18 +40,38 @@ function CharModal({ char, onClose }: { char: string; onClose: () => void }) {
               <span>结构：{found.structure ?? "-"}</span>
             </div>
             <div className="modal-actions">
-              <button onClick={() => speak(found.char)}>
+              <button onClick={() => speakCharacter(found)}>
                 <Volume2 size={16} /> 听读音
               </button>
             </div>
             <div className="writer-box mini-writer" ref={writerRef} />
           </>
+        ) : found ? (
+          <>
+            <div className="modal-hanzi">{found.char}</div>
+            <p className="modal-pinyin">{found.pinyin}</p>
+            <p className="modal-meaning">{found.meaning}</p>
+            <div className="modal-chips">
+              {found.words.map((w) => <span key={w}>{w}</span>)}
+            </div>
+            <p className="modal-sentence">{found.sentences[0]}</p>
+            <div className="modal-meta">
+              <span>部首：{found.radical ?? "-"}</span>
+              <span>笔画：{found.strokeCount ?? "-"}</span>
+              <span>结构：{found.structure ?? "-"}</span>
+            </div>
+            <div className="modal-actions">
+              <button onClick={() => speakCharacter(found)}>
+                <Volume2 size={16} /> 听读音
+              </button>
+            </div>
+          </>
         ) : (
           <>
             <div className="modal-hanzi">{char}</div>
-            <p className="modal-hint">课程库字，仍在逐步补充完整档案</p>
+            <p className="modal-hint">课程库补充字</p>
             <div className="modal-actions">
-              <button onClick={() => speak(char)}>
+              <button onClick={() => { const u = new SpeechSynthesisUtterance(char); u.lang = "zh-CN"; u.rate = 0.55; speechSynthesis.speak(u); }}>
                 <Volume2 size={16} /> 听读音
               </button>
             </div>

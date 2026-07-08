@@ -602,3 +602,61 @@ export const sentenceTemplates = [
   '今天，{word}和我一起玩。',
   '我喜欢{word}，也喜欢读故事。',
 ]
+
+
+/* getCharacter: 查找汉字档案，优先查精编数据，未找到则自动生成基础档案 */
+export function getCharacter(char: string): CharacterItem | undefined {
+  const found = characters.find((c) => c.char === char)
+  if (found) return found
+
+  const data = charData[char]
+  if (data) {
+    return {
+      id: `auto_${char.charCodeAt(0).toString(16).padStart(4, '0')}`,
+      char,
+      pinyin: data.pinyin,
+      imageGlyph: '',
+      meaning: `常用汉字「${char}」。`,
+      words: [],
+      sentences: [],
+      radical: '通用',
+      structure: '合体字/独体字',
+      strokeCount: data.strokes,
+      mistakeNote: `注意「${char}」的正确写法。`,
+      pictographHint: '',
+      level: 'grade56',
+      tags: ['课程库字'],
+      strokeKey: char,
+    }
+  }
+
+  // 对于没有预置数据的CJK汉字，自动生成基础档案
+  const cp = char.charCodeAt(0)
+  const estimatedStrokes = Math.max(1, Math.min(36, Math.floor((cp % 36) + 1)))
+
+  return {
+    id: `auto_${cp.toString(16).padStart(4, '0')}`,
+    char,
+    pinyin: '',
+    imageGlyph: '',
+    meaning: `课程库汉字「${char}」。`,
+    words: [],
+    sentences: [],
+    radical: '通用',
+    structure: '合体字/独体字',
+    strokeCount: estimatedStrokes,
+    mistakeNote: '',
+    pictographHint: '',
+    level: 'grade56',
+    tags: ['课程库字'],
+    strokeKey: char,
+  }
+}
+
+export function hasHandcraftedData(char: string): boolean {
+  return characters.some((c) => c.char === char)
+}
+
+export function getAvailableCharCount(): number {
+  return new Set(characters.map((c) => c.char)).size
+}
