@@ -107,16 +107,16 @@ export const lessons: Lesson[] = [
 ]
 
 export const stories: Story[] = [
-  { id: 's001', title: '太阳和月亮', level: 'sprout', text: '日出时，山边亮了。月亮悄悄回家，水面闪着光。', highlightCharacterIds: ['c001', 'c002', 'c003', 'c004'], unlockAfterLessonIds: ['l001'] },
+  { id: 's001', title: '太阳和月亮', level: 'sprout', text: '早上，太阳从山后面升起来，天空亮了。河水闪着光，好像在跟太阳说早安。到了晚上，月亮悄悄爬上树梢，轻轻地照着大地。', highlightCharacterIds: ['c001', 'c002', 'c003', 'c004'], unlockAfterLessonIds: ['l001'] },
   { id: 's002', title: '小人儿拍手', level: 'sprout', text: '火苗旁边有木马。小人儿张开口，伸出手，开心地笑。', highlightCharacterIds: ['c005', 'c006', 'c007', 'c008', 'c009'], unlockAfterLessonIds: ['l002'] },
   { id: 's003', title: '小脚上山', level: 'bridge', text: '小足印来到大山下。小朋友往上走，又从山上下来看小花。', highlightCharacterIds: ['c010', 'c011', 'c012', 'c013', 'c014'], unlockAfterLessonIds: ['l003'] },
-  { id: 's004', title: '云雨到田里', level: 'bridge', text: '天空中飘来白云，雨点落下。田里的禾苗喝饱了水。', highlightCharacterIds: ['c015', 'c016', 'c017', 'c018', 'c019', 'c020'], unlockAfterLessonIds: ['l004'] },
-  { id: 's005', title: '草地音乐会', level: 'grade1', text: '花开了，草绿了。虫子、小鸟和小鱼都来听风唱歌。', highlightCharacterIds: ['c021', 'c022', 'c023', 'c024', 'c025'], unlockAfterLessonIds: ['l005'] },
+  { id: 's004', title: '云雨到田里', level: 'bridge', text: '蓝蓝的天空飘来一朵朵白云，云朵越聚越多，慢慢地变成了灰色。哗啦哗啦，雨点落下来了！田里的禾苗仰起头，咕咚咕咚喝饱了雨水，开心地挺直了腰。', highlightCharacterIds: ['c015', 'c016', 'c017', 'c018', 'c019', 'c020'], unlockAfterLessonIds: ['l004'] },
+  { id: 's005', title: '草地音乐会', level: 'grade1', text: '春天来了，花儿一朵一朵地开了，草地也变得绿油油的。小虫子趴在叶子上，小鸟站在树枝上，小鱼探出水面，大家都竖起耳朵，听风儿轻轻地唱起了歌。', highlightCharacterIds: ['c021', 'c022', 'c023', 'c024', 'c025'], unlockAfterLessonIds: ['l005'] },
   { id: 's006', title: '牧场早饭', level: 'grade1', text: '小马跑来，小羊吃草，小牛喝奶。孩子和女孩一起数动物。', highlightCharacterIds: ['c026', 'c027', 'c028', 'c029', 'c030'], unlockAfterLessonIds: ['l006'] },
-  { id: 's007', title: '校门口的早安', level: 'grade2', text: '早上，同学背着书包来到学校。语文课上，大家一起读课文。', highlightCharacterIds: ['c031', 'c032', 'c033', 'c034', 'c035'], unlockAfterLessonIds: ['l007'] },
-  { id: 's008', title: '星光朋友会', level: 'grade2', text: '晚上，明亮的星星出来了。朋友们坐在一起，讲友好的故事。', highlightCharacterIds: ['c036', 'c037', 'c038', 'c039', 'c040'], unlockAfterLessonIds: ['l008'] },
-  { id: 's009', title: '湖边观察记', level: 'grade34', text: '我们观察湖边的自然变化，倒映的树影让人产生许多感想。', highlightCharacterIds: ['c041', 'c042', 'c043', 'c044', 'c045', 'c046'], unlockAfterLessonIds: ['l009'] },
-  { id: 's010', title: '班级辩论会', level: 'grade56', text: '真诚负责的同学认真辩论，分析问题时表现出毅力和智慧。', highlightCharacterIds: ['c047', 'c048', 'c049', 'c050', 'c051', 'c052'], unlockAfterLessonIds: ['l010'] },
+  { id: 's007', title: '校门口的早安', level: 'grade2', text: '早晨的阳光照在校门口，同学们背着书包高高兴兴地走进学校。上课铃响了，语文老师带着大家一起朗读课文，教室里传出整齐又响亮的读书声。', highlightCharacterIds: ['c031', 'c032', 'c033', 'c034', 'c035'], unlockAfterLessonIds: ['l007'] },
+  { id: 's008', title: '星光朋友会', level: 'grade2', text: '夜幕降临了，一颗颗明亮的星星挂在天上，像在眨眼睛。朋友们围坐在草地上，你一句我一句，讲着关于友谊的温暖小故事，笑声飘得很远很远。', highlightCharacterIds: ['c036', 'c037', 'c038', 'c039', 'c040'], unlockAfterLessonIds: ['l008'] },
+  { id: 's009', title: '湖边观察记', level: 'grade34', text: '我们静静地坐在湖边，观察着周围的自然变化。柳树的枝条轻轻拂过水面，树影倒映在湖中，像一幅会动的画。微风吹来，湖面泛起一圈圈波纹，让人心里感到格外宁静。', highlightCharacterIds: ['c041', 'c042', 'c043', 'c044', 'c045', 'c046'], unlockAfterLessonIds: ['l009'] },
+  { id: 's010', title: '班级辩论会', level: 'grade56', text: '今天的班会上，大家围绕"小学生要不要多读课外书"展开了热烈的辩论。正方同学引经据典，反方同学也不甘示弱。每个发言的同学都认真负责地表达自己的观点，分析问题时既充满智慧又坚持不懈，赢得了阵阵掌声。', highlightCharacterIds: ['c047', 'c048', 'c049', 'c050', 'c051', 'c052'], unlockAfterLessonIds: ['l010'] },
 ]
 
 export const badges: Badge[] = [
