@@ -14,7 +14,7 @@ import { sentenceTemplates } from "./data";
 import type { CharacterItem, GameResult, Lesson } from "./types";
 import { useProgressStore } from "./useProgressStore";
 import { getCharactersByLesson, makeQuestions, type QuizQuestion } from "./utils/quiz";
-import { speak, speakQuiz, warmupVoice } from "./utils/speech";
+import { speakQuiz } from "./utils/speech";
 
 import { BadgeScreen } from "./components/BadgeScreen";
 import { Header } from "./components/Header";

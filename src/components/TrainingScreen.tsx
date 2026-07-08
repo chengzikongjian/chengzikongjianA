@@ -1,6 +1,6 @@
-﻿import { useCallback, useMemo, useRef, useState } from "react";
+﻿import { useCallback, useRef, useState } from "react";
 import type { PointerEvent } from "react";
-import { ChevronLeft, ChevronRight, Mic2, RotateCcw, Sparkles, Star, Volume2, X } from "lucide-react";
+import { ChevronLeft, Mic2, RotateCcw, Sparkles, Star, Volume2 } from "lucide-react";
 import { characters } from "../data";
 import { textbookUnits, trainingModes } from "../supportData";
 import { studyPlanTemplates } from "../supportData";

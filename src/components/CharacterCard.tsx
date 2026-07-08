@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import HanziWriter from 'hanzi-writer'
 import { Play, Volume2 } from 'lucide-react'
 import type { CharacterItem } from '../types'
-import { speak, speakCharacter } from '../utils/speech'
+import { speak } from '../utils/speech'
 
 export function CharacterCard({ character, compact }: { character: CharacterItem; compact?: boolean }) {
   const writerRef = useRef<HTMLDivElement>(null)
@@ -22,7 +22,6 @@ export function CharacterCard({ character, compact }: { character: CharacterItem
       delayBetweenStrokes: 600,
       radicalColor: '#ef476f',
       showCharacter: false,
-      delayBetweenLoops: 2000,
     })
     // 添加田字格背景
     const svg = writerRef.current.querySelector('svg')
@@ -31,7 +30,6 @@ export function CharacterCard({ character, compact }: { character: CharacterItem
       svg.style.borderRadius = '8px'
       svg.style.boxShadow = 'inset 0 0 0 1px #ddd'
       // 田字格十字线
-      const cx = 100, cy = 100
       const ns = 'http://www.w3.org/2000/svg'
       const hLine = document.createElementNS(ns, 'line')
       hLine.setAttribute('x1', '12')

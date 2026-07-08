@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Mic2, Volume2 } from 'lucide-react'
 import { VoiceFeedback } from './VoiceFeedback'
-import { speak, speakQuiz } from '../utils/speech'
+import { speakQuiz } from '../utils/speech'
 import { gameLabels } from '../utils/quiz'
 import type { QuizQuestion } from '../utils/quiz'
 

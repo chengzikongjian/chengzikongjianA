@@ -2,14 +2,13 @@
 import { Volume2 } from "lucide-react";
 import HanziWriter from "hanzi-writer";
 import { curriculumEntries, curriculumStages, curriculumSummary } from "../curriculum";
-import { getCharacter, hasHandcraftedData } from "../data";
+import { getCharacter } from "../data";
 import { speakCharacter } from "../utils/speech";
 import "../lib-modal.css";
 
 function CharModal({ char, onClose }: { char: string; onClose: () => void }) {
   const writerRef = useRef<HTMLDivElement>(null);
   const found = getCharacter(char);
-  const isHandcrafted = hasHandcraftedData(char);
 
   useEffect(() => {
     if (!writerRef.current || !found) return;
@@ -45,26 +44,6 @@ function CharModal({ char, onClose }: { char: string; onClose: () => void }) {
               </button>
             </div>
             <div className="writer-box mini-writer" ref={writerRef} />
-          </>
-        ) : found ? (
-          <>
-            <div className="modal-hanzi">{found.char}</div>
-            <p className="modal-pinyin">{found.pinyin}</p>
-            <p className="modal-meaning">{found.meaning}</p>
-            <div className="modal-chips">
-              {found.words.map((w) => <span key={w}>{w}</span>)}
-            </div>
-            <p className="modal-sentence">{found.sentences[0]}</p>
-            <div className="modal-meta">
-              <span>部首：{found.radical ?? "-"}</span>
-              <span>笔画：{found.strokeCount ?? "-"}</span>
-              <span>结构：{found.structure ?? "-"}</span>
-            </div>
-            <div className="modal-actions">
-              <button onClick={() => speakCharacter(found)}>
-                <Volume2 size={16} /> 听读音
-              </button>
-            </div>
           </>
         ) : (
           <>

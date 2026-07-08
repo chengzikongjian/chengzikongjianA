@@ -1,6 +1,6 @@
 import { CheckCircle2, Sparkles, Star, Target } from 'lucide-react'
 import { characters, lessons, levels } from '../data'
-import type { CharacterItem, Lesson } from '../types'
+import type { CharacterItem } from '../types'
 import { curriculumSummary } from '../curriculum'
 import { useProgressStore } from '../useProgressStore'
 
