@@ -16,8 +16,8 @@ export function CharacterCard({ character, compact }: { character: CharacterItem
       height: compact ? 110 : 160,
       padding: 8,
       showOutline: true,
-      strokeAnimationSpeed: 1.2,
-      delayBetweenStrokes: 120,
+      strokeAnimationSpeed: 0.35,
+      delayBetweenStrokes: 450,
       radicalColor: '#ef476f',
     })
   }, [character, compact])
