@@ -133,12 +133,13 @@ function App() {
           setFeedback("done");
         } else {
           setQuizIndex(nextIndex);
+          setActiveCharacterId(quiz[nextIndex].character.id);
           setFeedback(null);
           if (quiz[nextIndex].type === "audio-choice") speakQuiz(quiz[nextIndex].character);
         }
       }, 800);
     },
-    [quiz, quizIndex, feedback, correctCount, activeLesson, completeLesson]
+    [quiz, quizIndex, feedback, correctCount, activeLesson, completeLesson, setActiveCharacterId]
   );
 
   const saveCreation = useCallback(() => {
