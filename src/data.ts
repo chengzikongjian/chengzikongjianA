@@ -1,4 +1,5 @@
 import type { Badge, CharacterItem, Lesson, LevelId, Story } from './types'
+import { charData } from './utils/charData'
 
 export const levels: Array<{ id: LevelId; title: string; description: string; color: string }> = [
   { id: 'sprout', title: '启蒙识字', description: '从身边的人和自然开始', color: '#32b67a' },
@@ -22,14 +23,14 @@ const makeCharacter = (
 ): CharacterItem => ({
   id,
   char,
-  pinyin,
+  pinyin: charData[char]?.pinyin ?? pinyin,
   imageGlyph,
   meaning,
   words,
   sentences,
   radical: tags[0] ?? '基础',
   structure: char.length === 1 ? '独体/合体识别' : '组合字形',
-  strokeCount: Math.max(1, char.codePointAt(0)! % 18),
+  strokeCount: charData[char]?.strokes ?? Math.max(1, char.codePointAt(0)! % 18),
   mistakeNote: `注意“${char}”在词语“${words[0]}”中的读音和字形。`,
   pictographHint: `${imageGlyph} -> ${char}`,
   level,

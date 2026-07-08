@@ -14,7 +14,7 @@ import { sentenceTemplates } from "./data";
 import type { CharacterItem, GameResult, Lesson } from "./types";
 import { useProgressStore } from "./useProgressStore";
 import { getCharactersByLesson, makeQuestions, type QuizQuestion } from "./utils/quiz";
-import { speak } from "./utils/speech";
+import { speak, speakQuiz, warmupVoice } from "./utils/speech";
 
 import { BadgeScreen } from "./components/BadgeScreen";
 import { Header } from "./components/Header";
@@ -105,7 +105,7 @@ function App() {
     setQuizIndex(0);
     setCorrectCount(0);
     setFeedback(null);
-    if (nextQuiz[0]?.type === "audio-choice") speak(nextQuiz[0].character.char);
+    if (nextQuiz[0]?.type === "audio-choice") speakQuiz(nextQuiz[0].character);
   }, [activeLesson]);
 
   const answerQuestion = useCallback(
@@ -134,7 +134,7 @@ function App() {
         } else {
           setQuizIndex(nextIndex);
           setFeedback(null);
-          if (quiz[nextIndex].type === "audio-choice") speak(quiz[nextIndex].character.char);
+          if (quiz[nextIndex].type === "audio-choice") speakQuiz(quiz[nextIndex].character);
         }
       }, 800);
     },

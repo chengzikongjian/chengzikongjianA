@@ -1,5 +1,5 @@
 import { Mic2, Volume2 } from 'lucide-react'
-import { speak } from '../utils/speech'
+import { speak, speakQuiz } from '../utils/speech'
 import { gameLabels } from '../utils/quiz'
 import type { QuizQuestion } from '../utils/quiz'
 
@@ -43,7 +43,7 @@ export function QuizPanel({
       )}
 
       {current.type === 'audio-choice' && (
-        <button className="listen-big pulse-anim" onClick={() => speak(current.character.char)}>
+        <button className="listen-big pulse-anim" onClick={() => speakQuiz(current.character)}>
           <Volume2 size={24} /> 再听一次
         </button>
       )}

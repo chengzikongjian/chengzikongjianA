@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import HanziWriter from 'hanzi-writer'
 import { Play, Volume2 } from 'lucide-react'
 import type { CharacterItem } from '../types'
-import { speak } from '../utils/speech'
+import { speak, speakCharacter } from '../utils/speech'
 
 export function CharacterCard({ character, compact }: { character: CharacterItem; compact?: boolean }) {
   const writerRef = useRef<HTMLDivElement>(null)
@@ -39,7 +39,7 @@ export function CharacterCard({ character, compact }: { character: CharacterItem
         </>
       )}
       <div className="card-actions">
-        <button onClick={() => speak(character.char)} title="播放读音">
+        <button onClick={() => speakCharacter(character)} title="播放读音">
           <Volume2 size={18} /> 听读音
         </button>
         <button onClick={() => writerInstance.current?.animateCharacter()} title="播放笔顺">
