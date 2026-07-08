@@ -14,7 +14,7 @@ function CharModal({ char, onClose }: { char: string; onClose: () => void }) {
     if (!writerRef.current || !found) return;
     writerRef.current.innerHTML = "";
     HanziWriter.create(writerRef.current, found.strokeKey, {
-      width: 100, height: 100, padding: 6,
+      width: 120, height: 120, padding: 16,
       showOutline: true, strokeAnimationSpeed: 1.2,
       delayBetweenStrokes: 120, radicalColor: "#ef476f",
     });
