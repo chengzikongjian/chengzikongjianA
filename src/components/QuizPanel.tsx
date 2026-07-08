@@ -1,4 +1,5 @@
 import { Mic2, Volume2 } from 'lucide-react'
+import { VoiceFeedback } from './VoiceFeedback'
 import { speak, speakQuiz } from '../utils/speech'
 import { gameLabels } from '../utils/quiz'
 import type { QuizQuestion } from '../utils/quiz'
@@ -67,11 +68,13 @@ export function QuizPanel({
           <span className="feedback-icon">{feedback === 'correct' ? '✨' : feedback === 'wrong' ? '💪' : '🎉'}</span>
           <span className="feedback-text">
             {feedback === 'correct' && '答对啦，星光亮了一点！'}
-            {feedback === 'wrong' && `再试也没关系，应该是 "${current.character.char}"，我们记住它。`}
+            {feedback === 'wrong' && '再试一次，应该是 "' + current.character.char + '"，加油！'}
             {feedback === 'done' && '闯关完成！故事已经解锁了，去读一读吧！'}
           </span>
         </div>
       )}
+      {feedback === 'correct' && <VoiceFeedback text="恭喜你回答正确，你太棒了！" />}
+      {feedback === 'wrong' && <VoiceFeedback text="很遗憾答错了，请再次选择" />}
     </aside>
   )
 }

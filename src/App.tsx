@@ -117,6 +117,10 @@ function App() {
       setFeedback(isCorrect ? "correct" : "wrong");
 
       window.setTimeout(() => {
+        // 答错时停在当前题目，不清除 feedback，不跳转
+        if (!isCorrect) {
+          return;
+        }
         const nextIndex = quizIndex + 1;
         if (nextIndex >= quiz.length) {
           const accuracy = nextCorrect / quiz.length;
@@ -137,7 +141,7 @@ function App() {
           setFeedback(null);
           if (quiz[nextIndex].type === "audio-choice") speakQuiz(quiz[nextIndex].character);
         }
-      }, 800);
+      }, 1200);
     },
     [quiz, quizIndex, feedback, correctCount, activeLesson, completeLesson, setActiveCharacterId]
   );
