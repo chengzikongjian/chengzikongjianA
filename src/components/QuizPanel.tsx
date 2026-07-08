@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Mic2, Volume2 } from 'lucide-react'
 import { VoiceFeedback } from './VoiceFeedback'
 import { speak, speakQuiz } from '../utils/speech'
@@ -16,6 +17,25 @@ export function QuizPanel({
   answerQuestion: (choice: import('../types').CharacterItem) => void
 }) {
   const current = quiz[quizIndex]
+  
+  // 每次进入新题目时，自动慢速朗读题目
+  useEffect(() => {
+    if (!current) return;
+    const text = current.prompt;
+    if (text && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = 'zh-CN';
+      u.rate = 0.5;
+      u.pitch = 1.1;
+      var voices = window.speechSynthesis.getVoices();
+      var female = voices.find(function(v) { return v.lang.startsWith('zh') && (v.name.toLowerCase().includes('female') || v.name.includes('\u5973')); });
+      var zh = voices.find(function(v) { return v.lang.startsWith('zh'); });
+      if (female) u.voice = female;
+      else if (zh) u.voice = zh;
+      window.speechSynthesis.speak(u);
+    }
+  }, [current]);
   if (!current) {
     return (
       <aside className="quiz-panel calm-panel">
