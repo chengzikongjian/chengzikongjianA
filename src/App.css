@@ -465,9 +465,13 @@ button:focus-visible {
 .writer-box {
   width: 176px;
   height: 176px;
-  border: 2px dashed #8ca8a4;
+  border: 2px solid #14342f;
   border-radius: 8px;
-  background: #ffffff;
+  background: #fbfffd;
+  display: grid;
+  place-items: center;
+  margin: 12px auto 0;
+  flex-shrink: 0;
 }
 
 /* ===== 闯关面板 ===== */
@@ -1428,3 +1432,6 @@ button:focus-visible {
     grid-template-columns: 1fr;
   }
 }
+
+
+
